@@ -1,6 +1,8 @@
 package br.com.taggedalbum.rest;
 
-import org.springframework.http.HttpStatus;
+import br.com.taggedalbum.model.User;
+import br.com.taggedalbum.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserRest {
 
+    @Autowired
+    private UserService userService;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> users() {
@@ -27,13 +32,15 @@ public class UserRest {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserData(@RequestParam Map<String, String> params) {
+    public ResponseEntity<?> saveUserData(@RequestBody Map<String, String> params) {
+        userService.saveUserData(params.get("accessToken"));
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/{facebookId}",method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteUserData(@PathVariable Long facebookId) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    @RequestMapping(value = "/{facebookId}",method = RequestMethod.GET)
+    public ResponseEntity<?> findUser(@PathVariable Long facebookId) {
+        User user = userService.findUserById(facebookId);
+        return ResponseEntity.ok(user);
     }
 
     @RequestMapping(value = "/{facebookId}/photos", method = RequestMethod.GET)
