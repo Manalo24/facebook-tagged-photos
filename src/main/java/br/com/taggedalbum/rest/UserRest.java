@@ -1,5 +1,6 @@
 package br.com.taggedalbum.rest;
 
+import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,8 +46,13 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/{facebookId}/photos", method = RequestMethod.GET)
-    public ResponseEntity<?> userPhotos(@PathVariable Long facebookId) {
-        return ResponseEntity.ok(facebookId);
+    public ResponseEntity<?> userPhotos(@PathVariable Long facebookId,
+                                        @RequestParam(value = "orderByReactions", required = false) boolean sorted,
+                                        @RequestParam(value = "direction", required = false, defaultValue = "1") int direction) {
+
+        List<Photo> photos = userService.findPhotoByUserId(facebookId, sorted, direction);
+
+        return ResponseEntity.ok(photos);
     }
 
 }

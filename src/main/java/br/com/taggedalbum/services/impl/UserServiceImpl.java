@@ -10,13 +10,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by rafaelperetta on 19/07/16.
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    public enum OrderBy {
+        ASC(1), DESC(-1);
+
+        int value;
+
+        OrderBy(int value) {
+            this.value = value;
+        }
+
+        public static OrderBy fromValue(int value) {
+
+            if (value == DESC.value) {
+                return DESC;
+            }
+
+            return ASC;
+        }
+
+        public Comparator<Photo> sort() {
+
+            if (value > 0) {
+                return (photo1, photo2) -> photo1.getTotalOfReactions() - photo2.getTotalOfReactions();
+            }
+
+            return (photo1, photo2) -> photo2.getTotalOfReactions() - photo1.getTotalOfReactions();
+        }
+    }
 
     private UserRepository userRepository;
 
@@ -47,5 +77,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<Photo> findPhotoByUserId(Long id) {
+        return photoRepository.findByUserId(id);
+    }
+
+    @Override
+    public List<Photo> findPhotoByUserId(Long id, boolean sortByReaction, int direction) {
+
+        List<Photo> photos = findPhotoByUserId(id);
+
+        if (sortByReaction) {
+            OrderBy orderBy = OrderBy.fromValue(direction);
+
+            return photos.stream()
+                    .sorted(orderBy.sort())
+                    .collect(Collectors.toList());
+        }
+
+        return photos;
     }
 }

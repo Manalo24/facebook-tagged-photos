@@ -13,4 +13,5 @@ public interface FacebookService {
     public User getUser(String accessToken);
 
     List<Photo> getUserPhotos(Long userId, String accessToken);
+
 }
