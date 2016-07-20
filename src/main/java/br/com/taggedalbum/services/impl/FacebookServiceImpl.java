@@ -1,6 +1,6 @@
 package br.com.taggedalbum.services.impl;
 
-import br.com.taggedalbum.model.Gender;
+import br.com.taggedalbum.enums.Gender;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.Reaction;
 import br.com.taggedalbum.model.User;
@@ -23,6 +23,7 @@ public class FacebookServiceImpl implements FacebookService {
 
     private String USER_FIELDS = "name,gender,picture";
     private String PHOTO_FIELDS = "id,name,album,link,images,reactions";
+    private String REACTION_FIELDS =  "id,name,type";
     private String PHOTO_TYPE = "tagged";
 
     private FacebookClient getFacebookTemplate(String token) {
@@ -71,9 +72,7 @@ public class FacebookServiceImpl implements FacebookService {
                 Photo photo = new Photo(Long.valueOf(item.getId()), item.getName(), item.getLink(), item.getImages().get(0).getSource(), albumName, user);
 
                 reactionList.forEach(reaction -> {
-                    //if (!reaction.getType().equals(Reaction.Type.LIKE)) {
-                        photo.addReaction(reaction);
-                    //}
+                    photo.addReaction(reaction);
                 });
 
                 photos.add(photo);
@@ -94,7 +93,7 @@ public class FacebookServiceImpl implements FacebookService {
     protected Connection<Reactions.ReactionItem> fetchPhotosReactions(Long photoId, String accessToken) {
         FacebookClient facebookClient = getFacebookTemplate(accessToken);
         Connection<Reactions.ReactionItem> reactions = facebookClient.fetchConnection(photoId + "/reactions", Reactions.ReactionItem.class,
-                Parameter.with("fields", "id,name,type"));
+                Parameter.with("fields", REACTION_FIELDS));
 
         return reactions;
     }

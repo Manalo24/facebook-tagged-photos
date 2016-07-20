@@ -1,4 +1,4 @@
-package br.com.taggedalbum.model;
+package br.com.taggedalbum.enums;
 
 /**
  * Created by rafaelperetta on 18/07/16.
@@ -18,9 +18,9 @@ public enum Gender {
     }
 
     public static Gender getEnumFromValue(String value) {
-        for(int i = 0; i < Gender.values().length; i++) {
-            if (Gender.values()[i].getValue().equals(value)) {
-                return Gender.values()[i];
+        for (Gender gender: Gender.values()) {
+            if (gender.getValue().equals(value)) {
+                return  gender;
             }
         }
         return null;

@@ -1,5 +1,6 @@
 package br.com.taggedalbum.services.impl;
 
+import br.com.taggedalbum.enums.OrderBy;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.repository.PhotoRepository;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,34 +19,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
-    public enum OrderBy {
-        ASC(1), DESC(-1);
-
-        int value;
-
-        OrderBy(int value) {
-            this.value = value;
-        }
-
-        public static OrderBy fromValue(int value) {
-
-            if (value == DESC.value) {
-                return DESC;
-            }
-
-            return ASC;
-        }
-
-        public Comparator<Photo> sort() {
-
-            if (value > 0) {
-                return (photo1, photo2) -> photo1.getTotalOfReactions() - photo2.getTotalOfReactions();
-            }
-
-            return (photo1, photo2) -> photo2.getTotalOfReactions() - photo1.getTotalOfReactions();
-        }
-    }
 
     private UserRepository userRepository;
 
@@ -98,5 +70,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return photos;
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserById(Long id) {
+        userRepository.deleteUserById(id);
     }
 }

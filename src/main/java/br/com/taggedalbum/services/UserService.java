@@ -17,4 +17,6 @@ public interface UserService {
     public List<Photo> findPhotoByUserId(Long id);
 
     public List<Photo> findPhotoByUserId(Long id, boolean sortByReaction, int direction);
+
+    public void deleteUserById(Long id);
 }

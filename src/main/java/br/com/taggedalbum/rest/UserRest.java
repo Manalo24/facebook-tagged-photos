@@ -4,6 +4,7 @@ import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,12 @@ public class UserRest {
     public ResponseEntity<?> findUser(@PathVariable Long facebookId) {
         User user = userService.findUserById(facebookId);
         return ResponseEntity.ok(user);
+    }
+
+    @RequestMapping(value = "/{facebookId}",method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(@PathVariable Long facebookId) {
+        userService.deleteUserById(facebookId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @RequestMapping(value = "/{facebookId}/photos", method = RequestMethod.GET)

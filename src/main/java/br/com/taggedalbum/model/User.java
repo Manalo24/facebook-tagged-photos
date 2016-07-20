@@ -1,6 +1,10 @@
 package br.com.taggedalbum.model;
 
+import br.com.taggedalbum.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by rafaelperetta on 18/07/16.
@@ -22,6 +26,10 @@ public class User {
 
     @Column(name = "profile_picture")
     private String profilePicture;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = Photo.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Photo> photos;
 
     public void setId(Long id) {
         this.id = id;
@@ -53,5 +61,9 @@ public class User {
 
     public String getProfilePicture() {
         return profilePicture;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
     }
 }
