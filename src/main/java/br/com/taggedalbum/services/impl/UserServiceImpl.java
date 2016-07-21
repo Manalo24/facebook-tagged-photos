@@ -1,6 +1,7 @@
 package br.com.taggedalbum.services.impl;
 
 import br.com.taggedalbum.enums.OrderBy;
+import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.repository.PhotoRepository;
@@ -47,8 +48,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(Long id) {
-        return userRepository.findById(id);
+    public User findUserById(Long id) throws ResourceNotFoundException {
+        User user = userRepository.findById(id);
+
+        if (user == null) {
+            throw new ResourceNotFoundException();
+        }
+
+        return user;
     }
 
     @Override
@@ -74,7 +81,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUserById(Long id) {
-        userRepository.deleteUserById(id);
+    public void deleteUserById(Long id) throws ResourceNotFoundException {
+        User user = findUserById(id);
+        userRepository.deleteUserById(user.getId());
     }
 }

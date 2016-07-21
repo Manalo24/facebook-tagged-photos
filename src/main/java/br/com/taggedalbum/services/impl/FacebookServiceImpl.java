@@ -60,11 +60,8 @@ public class FacebookServiceImpl implements FacebookService {
             List<com.restfb.types.Photo> facebookPhotoList = (List<com.restfb.types.Photo>) facebookPhotosIterator.next();
 
             facebookPhotoList.forEach(item -> {
-                String albumName = null;
 
-                if (item.getAlbum() != null) {
-                    albumName = item.getAlbum().getName();
-                }
+                String albumName = item.getAlbum() != null ? item.getAlbum().getName() : null;
 
                 Connection<Reactions.ReactionItem> reactions = fetchPhotosReactions(Long.valueOf(item.getId()), accessToken);
                 List<Reaction> reactionList = getReactionList(reactions);

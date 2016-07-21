@@ -22,7 +22,6 @@ public class Reaction implements Serializable{
 
     public Reaction() {
 
-
     }
 
     @Id

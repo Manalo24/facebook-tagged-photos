@@ -6,7 +6,7 @@ import br.com.taggedalbum.model.User;
 import java.util.List;
 
 /**
- * Created by rafaelperetta on 19/07/16.
+ * The {@link FacebookService} is responsible to fetch data from facebook graph API.
  */
 public interface FacebookService {
 
