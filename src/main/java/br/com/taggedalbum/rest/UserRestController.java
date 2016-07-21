@@ -32,7 +32,7 @@ public class UserRestController {
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUserData(@RequestBody Map<String, String> params) {
         try {
-            userService.saveUserData(params.get("accessToken"));
+            userService.saveUserData(params.get("accessToken"), Long.valueOf(params.get("facebookId")));
             return ResponseEntity.ok().build();
         } catch (FacebookOAuthException ex) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

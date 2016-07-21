@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUserData(String accessToken) {
-        User user = facebookService.getUser(accessToken);
+    public void saveUserData(String accessToken, Long facebookId) {
+        User user = facebookService.getUser(accessToken, facebookId);
         userRepository.save(user);
         saveUserPhotos(user.getId(), accessToken);
     }

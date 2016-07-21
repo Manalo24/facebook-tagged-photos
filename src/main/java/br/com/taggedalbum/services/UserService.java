@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    public void saveUserData(String accessToken);
+    public void saveUserData(String accessToken, Long id);
 
     public User findUserById(Long id) throws ResourceNotFoundException;
 
