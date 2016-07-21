@@ -1,6 +1,6 @@
 package br.com.taggedalbum.services.impl;
 
-import br.com.taggedalbum.enums.OrderBy;
+import br.com.taggedalbum.enums.Direction;
 import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         List<Photo> photos = findPhotoByUserId(id);
 
         if (sortByReaction) {
-            OrderBy orderBy = OrderBy.fromValue(direction);
+            Direction orderBy = Direction.fromValue(direction);
 
             return photos.stream()
                     .sorted(orderBy.sort())

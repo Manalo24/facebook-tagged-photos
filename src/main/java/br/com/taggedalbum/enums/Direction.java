@@ -7,16 +7,16 @@ import java.util.Comparator;
 /**
  * Created by rafaelperetta on 20/07/16.
  */
-public enum OrderBy {
+public enum Direction {
     ASC(1), DESC(-1);
 
     int value;
 
-    OrderBy(int value) {
+    Direction(int value) {
         this.value = value;
     }
 
-    public static OrderBy fromValue(int value) {
+    public static Direction fromValue(int value) {
 
         if (value == DESC.value) {
             return DESC;

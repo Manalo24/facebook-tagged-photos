@@ -21,10 +21,16 @@ import java.util.List;
 public class FacebookServiceImpl implements FacebookService {
 
 
-    private String USER_FIELDS = "name,gender,picture";
-    private String PHOTO_FIELDS = "id,name,album,link,images,reactions";
-    private String REACTION_FIELDS =  "id,name,type";
-    private String PHOTO_TYPE = "tagged";
+    public static final String FIELDS = "fields";
+    public static final String TYPE = "type";
+
+    public static final String USER_FIELDS = "name,gender,picture";
+    public static final String PHOTO_FIELDS = "id,name,album,link,images,reactions";
+    public static final String REACTION_FIELDS =  "id,name,type";
+    public static final String PHOTO_TYPE = "tagged";
+
+    public static final String PHOTOS_PATH = "/photos";
+    public static final String REACTIONS_PATH = "/reactions";
 
     private FacebookClient getFacebookTemplate(String token) {
         return new DefaultFacebookClient(token, Version.LATEST);
@@ -81,16 +87,16 @@ public class FacebookServiceImpl implements FacebookService {
 
     protected Connection<com.restfb.types.Photo> fetchUserPhotos(Long userId, String accessToken) {
         FacebookClient facebookClient = getFacebookTemplate(accessToken);
-        Connection<com.restfb.types.Photo> facebookPhotos = facebookClient.fetchConnection(userId + "/photos", com.restfb.types.Photo.class,
-                Parameter.with("fields", PHOTO_FIELDS), Parameter.with("type", PHOTO_TYPE));
+        Connection<com.restfb.types.Photo> facebookPhotos = facebookClient.fetchConnection(userId + PHOTOS_PATH, com.restfb.types.Photo.class,
+                Parameter.with(FIELDS, PHOTO_FIELDS), Parameter.with(TYPE, PHOTO_TYPE));
 
         return facebookPhotos;
     }
 
     protected Connection<Reactions.ReactionItem> fetchPhotosReactions(Long photoId, String accessToken) {
         FacebookClient facebookClient = getFacebookTemplate(accessToken);
-        Connection<Reactions.ReactionItem> reactions = facebookClient.fetchConnection(photoId + "/reactions", Reactions.ReactionItem.class,
-                Parameter.with("fields", REACTION_FIELDS));
+        Connection<Reactions.ReactionItem> reactions = facebookClient.fetchConnection(photoId + REACTIONS_PATH, Reactions.ReactionItem.class,
+                Parameter.with(FIELDS, REACTION_FIELDS));
 
         return reactions;
     }

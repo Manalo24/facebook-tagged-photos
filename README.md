@@ -1,2 +1,2 @@
-# facebook-tagged-photos
-Getting user facebook tagged photos
+# Facebook tagged photos
+Getting tagged photos from facebook.
