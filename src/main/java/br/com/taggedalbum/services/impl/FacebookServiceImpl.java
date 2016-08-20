@@ -39,7 +39,7 @@ public class FacebookServiceImpl implements FacebookService {
     @Override
     public User getUser(String accessToken, Long userId) {
         FacebookClient facebookClient = getFacebookTemplate(accessToken);
-        com.restfb.types.User facebookUser = facebookClient.fetchObject("me", com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS));
+        com.restfb.types.User facebookUser = facebookClient.fetchObject(String.valueOf(userId), com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS));
 
 
         User user = new User();
