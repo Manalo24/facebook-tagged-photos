@@ -38,11 +38,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveUserData(String accessToken, Long facebookId) {
+
+        Optional<User> userOptional = userRepository.findById(facebookId);
+        if (userOptional.isPresent()) {
+            userRepository.deleteUserById(facebookId);
+        }
+
         User user = facebookService.getUser(accessToken, facebookId);
         userRepository.save(user);
         saveUserPhotos(user.getId(), accessToken);
     }
 
+    @Transactional
     protected void saveUserPhotos(Long userId, String accessToken) {
         List<Photo> photos = facebookService.getUserPhotos(userId, accessToken);
         photoRepository.save(photos);
