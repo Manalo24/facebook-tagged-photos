@@ -16,9 +16,10 @@ public interface UserRepository extends Repository<User, Long> {
     @Query("from User u where u.id = :facebookId")
     Optional<User> findById(@Param("facebookId") Long facebookId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("delete User u where u.id = :facebookId")
     void deleteUserById(@Param("facebookId") Long facebookId);
 
     User save(User user);
+
 }
