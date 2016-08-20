@@ -1,6 +1,5 @@
 package br.com.taggedalbum.services.impl;
 
-import br.com.taggedalbum.enums.Direction;
 import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
@@ -9,11 +8,13 @@ import br.com.taggedalbum.repository.UserRepository;
 import br.com.taggedalbum.services.FacebookService;
 import br.com.taggedalbum.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
  * Created by rafaelperetta on 19/07/16.
@@ -49,34 +50,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long id) throws ResourceNotFoundException {
-        User user = userRepository.findById(id);
-
-        if (user == null) {
-            throw new ResourceNotFoundException();
-        }
-
-        return user;
+        Optional<User> userResult = userRepository.findById(id);
+        return userResult.orElseThrow(() -> new ResourceNotFoundException());
     }
 
     @Override
-    public List<Photo> findPhotoByUserId(Long id) {
-        return photoRepository.findByUserId(id);
-    }
-
-    @Override
-    public List<Photo> findPhotoByUserId(Long id, boolean sortByReaction, int direction) {
-
-        List<Photo> photos = findPhotoByUserId(id);
-
-        if (sortByReaction) {
-            Direction orderBy = Direction.fromValue(direction);
-
-            return photos.stream()
-                    .sorted(orderBy.sort())
-                    .collect(Collectors.toList());
-        }
-
-        return photos;
+    public Slice<Photo> findPhotoByUserId(Long id, Pageable pageRequest) {
+        return photoRepository.findByUserId(id, pageRequest);
     }
 
     @Transactional

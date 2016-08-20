@@ -3,8 +3,8 @@ package br.com.taggedalbum.services;
 import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 /**
  * Created by rafaelperetta on 18/07/16.
@@ -15,9 +15,7 @@ public interface UserService {
 
     public User findUserById(Long id) throws ResourceNotFoundException;
 
-    public List<Photo> findPhotoByUserId(Long id);
-
-    public List<Photo> findPhotoByUserId(Long id, boolean sortByReaction, int direction);
+    public Slice<Photo> findPhotoByUserId(Long id, Pageable pageRequest);
 
     public void deleteUserById(Long id) throws ResourceNotFoundException;
 }
