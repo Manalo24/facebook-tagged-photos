@@ -23,6 +23,7 @@ public class Photo {
         this.album = album;
         this.user = user;
         this.reactions = new HashSet<>();
+        this.reactionsTotal = 0;
     }
 
     public Photo() {
@@ -39,6 +40,9 @@ public class Photo {
     private String image;
 
     private String album;
+
+    @Column(name = "reactions_total")
+    private Integer reactionsTotal;
 
     @JsonIgnore
     @ManyToOne
@@ -79,13 +83,14 @@ public class Photo {
     public void addReaction(Reaction reaction) {
         this.reactions.add(reaction);
         reaction.setPhoto(this);
+        this.reactionsTotal = this.reactions.size();
     }
 
     public List<ReactionStats> getReactionStats() {
         return reactionStats;
     }
 
-    public int getTotalOfReactions() {
-        return this.reactionStats.stream().mapToInt(item -> item.getCount()).sum();
+    public Integer getReactionsTotal() {
+        return reactionsTotal;
     }
 }

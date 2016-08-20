@@ -6,12 +6,13 @@ import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.services.UserService;
 import com.restfb.exception.FacebookOAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,11 +53,9 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/{facebookId}/photos", method = RequestMethod.GET)
-    public ResponseEntity<?> userPhotos(@PathVariable Long facebookId,
-                                        @RequestParam(value = "orderByReactions", required = false) boolean sorted,
-                                        @RequestParam(value = "direction", required = false, defaultValue = "1") int direction) {
+    public ResponseEntity<?> userPhotos(@PathVariable Long facebookId, Pageable pageRequest) {
 
-        List<Photo> photos = userService.findPhotoByUserId(facebookId, sorted, direction);
+        Slice<Photo> photos = userService.findPhotoByUserId(facebookId, pageRequest);
 
         return ResponseEntity.ok(photos);
     }
