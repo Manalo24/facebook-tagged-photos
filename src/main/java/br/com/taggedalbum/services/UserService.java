@@ -1,5 +1,6 @@
 package br.com.taggedalbum.services;
 
+import br.com.taggedalbum.exception.FacebookResourceNotFound;
 import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
@@ -11,7 +12,7 @@ import org.springframework.data.domain.Slice;
  */
 public interface UserService {
 
-    public void saveUserData(String accessToken, Long id);
+    public void saveUserData(String accessToken, Long id) throws FacebookResourceNotFound;
 
     public User findUserById(Long id) throws ResourceNotFoundException;
 

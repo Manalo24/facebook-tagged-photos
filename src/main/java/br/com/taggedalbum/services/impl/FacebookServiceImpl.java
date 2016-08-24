@@ -1,11 +1,13 @@
 package br.com.taggedalbum.services.impl;
 
 import br.com.taggedalbum.enums.Gender;
+import br.com.taggedalbum.exception.FacebookResourceNotFound;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.Reaction;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.services.FacebookService;
 import com.restfb.*;
+import com.restfb.exception.FacebookGraphException;
 import com.restfb.types.Reactions;
 import org.springframework.stereotype.Service;
 
@@ -37,18 +39,21 @@ public class FacebookServiceImpl implements FacebookService {
     }
 
     @Override
-    public User getUser(String accessToken, Long userId) {
-        FacebookClient facebookClient = getFacebookTemplate(accessToken);
-        com.restfb.types.User facebookUser = facebookClient.fetchObject(String.valueOf(userId), com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS));
+    public User getUser(String accessToken, Long userId) throws FacebookResourceNotFound {
+        try {
+            FacebookClient facebookClient = getFacebookTemplate(accessToken);
+            com.restfb.types.User facebookUser = facebookClient.fetchObject(String.valueOf(userId), com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS));
 
+            User user = new User();
+            user.setId(Long.valueOf(facebookUser.getId()));
+            user.setName(facebookUser.getName());
+            user.setProfilePicture(facebookUser.getPicture().getUrl());
+            user.setGender(Gender.getEnumFromValue(facebookUser.getGender()));
 
-        User user = new User();
-        user.setId(Long.valueOf(facebookUser.getId()));
-        user.setName(facebookUser.getName());
-        user.setProfilePicture(facebookUser.getPicture().getUrl());
-        user.setGender(Gender.getEnumFromValue(facebookUser.getGender()));
-
-        return user;
+            return user;
+        } catch (FacebookGraphException ex) {
+            throw new FacebookResourceNotFound("Facebook user not found.");
+        }
     }
 
     @Override

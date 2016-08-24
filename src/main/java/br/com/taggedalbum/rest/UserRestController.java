@@ -1,5 +1,6 @@
 package br.com.taggedalbum.rest;
 
+import br.com.taggedalbum.exception.FacebookResourceNotFound;
 import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
@@ -31,7 +32,7 @@ public class UserRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUserData(@RequestBody Map<String, String> params) {
+    public ResponseEntity<?> saveUserData(@RequestBody Map<String, String> params) throws FacebookResourceNotFound {
         try {
             userService.saveUserData(params.get("accessToken"), Long.valueOf(params.get("facebookId")));
             return ResponseEntity.ok().build();
