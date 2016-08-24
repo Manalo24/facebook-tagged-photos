@@ -1,7 +1,7 @@
 package br.com.taggedalbum.services.impl;
 
-import br.com.taggedalbum.exception.FacebookResourceNotFound;
 import br.com.taggedalbum.exception.ResourceNotFoundException;
+import br.com.taggedalbum.exception.UserNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.repository.PhotoRepository;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUserData(String accessToken, Long facebookId) throws FacebookResourceNotFound {
+    public void saveUserData(String accessToken, Long facebookId) {
 
         Optional<User> userOptional = userRepository.findById(facebookId);
         if (userOptional.isPresent()) {
@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public User findUserById(Long id) throws ResourceNotFoundException {
+    public User findUserById(Long id) {
         Optional<User> userResult = userRepository.findById(id);
-        return userResult.orElseThrow(() -> new ResourceNotFoundException());
+        return userResult.orElseThrow(() -> new UserNotFoundException("User not found.", id));
     }
 
     @Transactional(readOnly = true)

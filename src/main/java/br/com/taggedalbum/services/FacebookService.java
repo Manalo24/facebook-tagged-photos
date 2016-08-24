@@ -1,6 +1,5 @@
 package br.com.taggedalbum.services;
 
-import br.com.taggedalbum.exception.FacebookResourceNotFound;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public interface FacebookService {
 
-    public User getUser(String accessToken, Long userId) throws FacebookResourceNotFound;
+    User getUser(String accessToken, Long userId);
 
     List<Photo> getUserPhotos(Long userId, String accessToken);
 

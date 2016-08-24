@@ -39,7 +39,7 @@ public class FacebookServiceImpl implements FacebookService {
     }
 
     @Override
-    public User getUser(String accessToken, Long userId) throws FacebookResourceNotFound {
+    public User getUser(String accessToken, Long userId) {
         try {
             FacebookClient facebookClient = getFacebookTemplate(accessToken);
             com.restfb.types.User facebookUser = facebookClient.fetchObject(String.valueOf(userId), com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS));
@@ -52,7 +52,7 @@ public class FacebookServiceImpl implements FacebookService {
 
             return user;
         } catch (FacebookGraphException ex) {
-            throw new FacebookResourceNotFound("Facebook user not found.");
+            throw new FacebookResourceNotFound("Facebook resource not found.", userId);
         }
     }
 
