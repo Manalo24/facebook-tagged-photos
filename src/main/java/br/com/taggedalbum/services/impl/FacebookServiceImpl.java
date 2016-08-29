@@ -44,13 +44,12 @@ public class FacebookServiceImpl implements FacebookService {
             FacebookClient facebookClient = getFacebookTemplate(accessToken);
             com.restfb.types.User facebookUser = facebookClient.fetchObject(String.valueOf(userId), com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS));
 
-            User user = new User();
-            user.setId(Long.valueOf(facebookUser.getId()));
-            user.setName(facebookUser.getName());
-            user.setProfilePicture(facebookUser.getPicture().getUrl());
-            user.setGender(Gender.getEnumFromValue(facebookUser.getGender()));
+            Long id = Long.valueOf(facebookUser.getId());
+            String pictureUrl = facebookUser.getPicture().getUrl();
+            Gender gender = Gender.getEnumFromValue(facebookUser.getGender());
 
-            return user;
+            return new User(id, facebookUser.getName(), gender, pictureUrl);
+
         } catch (FacebookGraphException ex) {
             throw new FacebookResourceNotFound("Facebook resource not found.", userId);
         }
