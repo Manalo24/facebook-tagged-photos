@@ -1,6 +1,5 @@
 package br.com.taggedalbum.rest;
 
-import br.com.taggedalbum.exception.ResourceNotFoundException;
 import br.com.taggedalbum.model.Photo;
 import br.com.taggedalbum.model.User;
 import br.com.taggedalbum.services.UserService;
@@ -41,13 +40,13 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/{facebookId}",method = RequestMethod.GET)
-    public ResponseEntity<?> findUser(@PathVariable Long facebookId) throws ResourceNotFoundException {
+    public ResponseEntity<?> findUser(@PathVariable Long facebookId) {
         User user = userService.findUserById(facebookId);
         return ResponseEntity.ok(user);
     }
 
     @RequestMapping(value = "/{facebookId}",method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable Long facebookId) throws ResourceNotFoundException {
+    public ResponseEntity<?> deleteUser(@PathVariable Long facebookId) {
         userService.deleteUserById(facebookId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

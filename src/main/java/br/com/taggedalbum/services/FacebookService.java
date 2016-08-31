@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface FacebookService {
 
-    public User getUser(String accessToken, Long userId);
+    User getUser(String accessToken, Long userId);
 
     List<Photo> getUserPhotos(Long userId, String accessToken);
 

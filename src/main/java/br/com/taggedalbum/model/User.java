@@ -13,6 +13,16 @@ import java.util.List;
 @Table(name = "facebook_user")
 public class User {
 
+    public User() {
+
+    }
+
+    public User(Long id, String name, Gender gender, String profilePicture) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.profilePicture = profilePicture;
+    }
 
     @Id
     @Column(name = "id")
